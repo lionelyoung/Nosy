@@ -1,35 +1,48 @@
 #!/usr/bin/env python
-# By Jeff Winkler, http://jeffwinkler.net
-# Forked from wkral http://github.com/wkral/Nosy
 
-import os,stat,time,sys,fnmatch
+"""
+A simple testrunner for nose (or anything else).
+
+Watch for changes in all file types specified in 'EXTENSIONS'.
+If changes, run test executable in 'EXECUTABLE', with default
+arguments 'DEFAULTARGS'.
+
+Originally by Jeff Winkler, http://jeffwinkler.net
+Forked from wkral http://github.com/wkral/Nosy
+"""
+
+import os
+import stat
+import time
+import sys
+import fnmatch
+
 
 EXTENSIONS = ['*.py']
 EXECUTABLE = 'nosetests'
 DEFAULTARGS = '-vv'
 
-'''
-Watch for changes in all file types specified in 'EXTENSIONS'. 
-If changes, run test executable in 'EXECUTABLE', with default
-arguments 'DEFAULTARGS'. 
-'''
+
 def checkSum():
-    ''' Return a long which can be used to know if any .py files have changed.'''
+    """
+    Return a long which can be used to know if any .py files have changed.
+    """
     val = 0
     for root, dirs, files in os.walk(os.getcwd()):
         for extension in EXTENSIONS:
             for f in fnmatch.filter(files, extension):
-                stats = os.stat (os.path.join(root, f))
-                val += stats [stat.ST_SIZE] + stats [stat.ST_MTIME]
+                stats = os.stat(os.path.join(root, f))
+                val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
     return val
 
 if __name__ == '__main__':
-    val=0
+    val = 0
     try:
-        while (True):
+        while True:
             if checkSum() != val:
-                val=checkSum()
-                os.system ('%s %s %s' % (EXECUTABLE, DEFAULTARGS, ' '.join(sys.argv[1:])))
+                val = checkSum()
+                os.system('%s %s %s' % (EXECUTABLE, DEFAULTARGS,
+                    ' '.join(sys.argv[1:])))
             time.sleep(1)
     except KeyboardInterrupt:
         print 'Goodbye'
