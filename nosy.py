@@ -14,6 +14,7 @@ Forked from wkral http://github.com/wkral/Nosy
 import os
 import stat
 import time
+import datetime
 import sys
 import fnmatch
 
@@ -43,6 +44,8 @@ if __name__ == '__main__':
                 val = checkSum()
                 os.system('%s %s %s' % (EXECUTABLE, DEFAULTARGS,
                     ' '.join(sys.argv[1:])))
+                print datetime.datetime.now().__str__()
+                print '=' * 77
             time.sleep(1)
     except KeyboardInterrupt:
         print 'Goodbye'
