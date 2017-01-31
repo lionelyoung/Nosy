@@ -8,6 +8,7 @@ import stat
 import subprocess
 import sys
 import time
+import datetime
 
 '''
 Nosy
@@ -81,6 +82,8 @@ def main():
             if new_sum != last_sum:
                 last_sum = new_sum
                 subprocess.call(command, shell=True)
+                print datetime.datetime.now().__str__()
+                print '=' * 77
             time.sleep(1)
     except KeyboardInterrupt:
         print('\nGoodbye')
