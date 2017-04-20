@@ -62,6 +62,8 @@ def check_sum(config):
     for root, dirs, files in os.walk(os.getcwd()):
         for extension in config['watch']:
             for f in fnmatch.filter(files, extension):
+                if f[0] == ".":
+                    continue
                 stats = os.stat(os.path.join(root, f))
                 val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
     return val
@@ -82,8 +84,8 @@ def main():
             if new_sum != last_sum:
                 last_sum = new_sum
                 subprocess.call(command, shell=True)
-                print datetime.datetime.now().__str__()
-                print '=' * 77
+                print(datetime.datetime.now().__str__())
+                print('=' * 77)
             time.sleep(1)
     except KeyboardInterrupt:
         print('\nGoodbye')
